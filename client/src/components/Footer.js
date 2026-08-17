@@ -1,0 +1,37 @@
+import React from 'react';
+
+function Footer () {
+    return (
+        <React.Fragment>
+            <div className="footer" >
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="bookhaven-div">
+                                <div className="bookhaven">BOOKHAVEN</div>
+                                <p className="bookhaven-desc">
+                                    A COMMUNITY LIBRARY CATALOG — <br />
+                                    BUILT FOR READERS, BY READERS.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="col-md-6">
+                            <div className="footer-links-slogan float-md-right">
+                                <div className="footer-links text-center">
+                                    CREDITS | PRIVACY | ABOUT | CONTACT
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-12">
+                            <p className="text-center copyrights">COPYRIGHT, BOOKHAVEN</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
+    )
+}
+
+export default Footer;

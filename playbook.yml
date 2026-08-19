@@ -1,0 +1,10 @@
+---
+- name: Deploy BookHaven application stack
+  hosts: bookhaven
+  become: true
+
+  roles:
+    - docker-setup
+    - setup-mongodb
+    - backend-deployment
+    - frontend-deployment

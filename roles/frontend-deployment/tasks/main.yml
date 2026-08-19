@@ -14,6 +14,7 @@
     name: "{{ frontend_container_name }}"
     image: "{{ frontend_image }}"
     state: started
+    recreate: true
     restart_policy: unless-stopped
     published_ports:
       - "{{ frontend_port }}:80"

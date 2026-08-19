@@ -45,3 +45,9 @@
     name: docker
     state: started
     enabled: true
+
+- name: Add Vagrant user to Docker group
+  ansible.builtin.user:
+    name: vagrant
+    groups: docker
+    append: true

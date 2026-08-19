@@ -12,13 +12,18 @@
     name: "{{ mongo_network }}"
     state: present
 
+- name: Ensure MongoDB image is available
+  community.docker.docker_image:
+    name: "{{ mongo_image }}"
+    source: pull
+    state: present
+
 - name: Run MongoDB container
   community.docker.docker_container:
     name: "{{ mongo_container_name }}"
     image: "{{ mongo_image }}"
     state: started
     restart_policy: unless-stopped
-    pull: true
     published_ports:
       - "{{ mongo_port }}:27017"
     volumes:

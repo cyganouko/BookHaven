@@ -12,7 +12,7 @@ let dbName = 'bookhaven';
 
 // define a url to connect to the database
 const MONGODB_URI = process.env.MONGODB_URI || mongodb_url + dbName
-mongoose.connect(MONGODB_URI,{useNewUrlParser: true, useUnifiedTopology: true  } )
+mongoose.connect(MONGODB_URI)
 let db = mongoose.connection;
 
 // Check Connection

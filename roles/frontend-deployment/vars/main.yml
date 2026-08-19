@@ -1,0 +1,5 @@
+---
+frontend_container_name: bookhaven-frontend
+frontend_image: "{{ dockerhub_username }}/bookhaven-frontend:{{ docker_image_tag }}"
+frontend_network: app-net
+frontend_port: "3000"

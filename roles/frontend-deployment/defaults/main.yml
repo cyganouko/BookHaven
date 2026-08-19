@@ -1,0 +1,3 @@
+---
+dockerhub_username: YOUR_DOCKERHUB_USERNAME
+docker_image_tag: "1.0.0"

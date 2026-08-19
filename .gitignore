@@ -1,9 +1,45 @@
-app-mongo-data
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# MongoDB persistent data
 app-mongo-data/
-vars.yml
-vault.yml
+data/
+
+# Vagrant
 .vagrant/
+
+# Ansible
+*.retry
+vault.yml
+vars.yml
+
+# IDE/editor files
 .vscode/
-.vscode
-.vscode/*
-.vscode/*.json
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

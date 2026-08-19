@@ -1,6 +1,6 @@
 ---
 - name: Deploy BookHaven application stack
-  hosts: bookhaven
+  hosts: all
   become: true
 
   roles:

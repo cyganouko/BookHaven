@@ -1,14 +1,27 @@
 ---
-- name: Run MongoDB Container
-  docker_container:
-    name: app-mongo
-    image: mongo
-    ports:
-      - '27017:27017'
+- name: Ensure MongoDB data directory exists
+  ansible.builtin.file:
+    path: "{{ mongo_data_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Ensure BookHaven Docker network exists
+  community.docker.docker_network:
+    name: "{{ mongo_network }}"
+    state: present
+
+- name: Run MongoDB container
+  community.docker.docker_container:
+    name: "{{ mongo_container_name }}"
+    image: "{{ mongo_image }}"
+    state: started
+    restart_policy: unless-stopped
+    pull: true
+    published_ports:
+      - "{{ mongo_port }}:27017"
     volumes:
-      - ./app-mongo-data:/data/db
+      - "{{ mongo_data_path }}:/data/db"
     networks:
-      - name: app-net
-  tags:
-    - database
-    - backend
+      - name: "{{ mongo_network }}"

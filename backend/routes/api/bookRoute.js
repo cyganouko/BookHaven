@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const router = express.Router();
 
 // Book Model
@@ -6,58 +6,68 @@ const Book = require('../../models/Books');
 
 // @route GET /books
 // @desc Get ALL books
-router.get('/', (req,res)=>{
-    // Fetch all books from database
-    Book.find({}, (error, books)=>{
-        if (error) console.log(error)
-        res.json(books)
-    })
-})
+router.get('/', async (req, res) => {
+    try {
+        const books = await Book.find({});
+        res.json(books);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch books' });
+    }
+});
 
 // @route POST /books
-// @desc  Create a book
-router.post('/', (req,res)=>{
+// @desc Create a book
+router.post('/', async (req, res) => {
+    try {
+        const newBook = new Book({
+            title: req.body.title,
+            author: req.body.author,
+            description: req.body.description,
+            copies: req.body.copies,
+        });
 
-    // Create a book item
-    const newBook = new Book({
-        title: req.body.title,
-        author: req.body.author,
-        description: req.body.description,
-        copies: req.body.copies,
-    });
+        const book = await newBook.save();
+        res.status(201).json(book);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to create book' });
+    }
+});
 
-    newBook.save((err, book)=>{
-        if (err) console.log(err)
-        res.json(book)
-    })
-})
-// @route PUT api/books/:id
-// @desc  Update a book
-router.put('/:id', (req,res)=>{
-    // Update a book in the database
-    Book.updateOne({_id:req.params.id},{
-        title: req.body.title,
-        author: req.body.author,
-        description: req.body.description,
-        copies: req.body.copies,
-        photo:req.body.photo
-    }, {upsert: true}, (err)=>{
-        if(err) console.log(err);
-        res.json({success:true})
-    })
-})
-// @route DELETE api/books/:id
-// @desc  Delete a book
-router.delete('/:id', (req,res)=>{
-    // Delete a book from database
-    Book.deleteOne({_id: req.params.id}, (err)=>{
-        if (err){
-            console.log(err)
-            res.json({success:false})
-        }else{
-            res.json({success:true})
-        }
-    })
-})
+// @route PUT /api/books/:id
+// @desc Update a book
+router.put('/:id', async (req, res) => {
+    try {
+        await Book.updateOne(
+            { _id: req.params.id },
+            {
+                title: req.body.title,
+                author: req.body.author,
+                description: req.body.description,
+                copies: req.body.copies,
+                photo: req.body.photo
+            },
+            { upsert: true }
+        );
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Failed to update book' });
+    }
+});
+
+// @route DELETE /api/books/:id
+// @desc Delete a book
+router.delete('/:id', async (req, res) => {
+    try {
+        await Book.deleteOne({ _id: req.params.id });
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Failed to delete book' });
+    }
+});
 
 module.exports = router;

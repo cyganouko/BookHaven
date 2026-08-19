@@ -19,7 +19,7 @@ class BookControl extends Component {
     }
 
     componentDidMount(){
-        axios.get('http://localhost:5000/api/books')
+        axios.get('/api/books')
             .then(res =>{
                 this.setState({
                     actualBookList: res.data
@@ -63,7 +63,7 @@ class BookControl extends Component {
 
     // Method to handle adding a new book
     handleAddingNewBook = (newBook) =>{
-        axios.post('http://localhost:5000/api/books', newBook)
+        axios.post('/api/books', newBook)
             .then(res => console.log(res.data))
         this.setState({
             formVisibleOnPage: false
@@ -71,7 +71,7 @@ class BookControl extends Component {
     };
 
     handleDeletingBook = (id) =>{
-        axios.delete('http://localhost:5000/api/books/'+id)
+        axios.delete('/api/books/'+id)
             .then(res => console.log(res.data))
             .catch((error) =>{
                 console.log(error)
@@ -90,7 +90,7 @@ class BookControl extends Component {
     }
 
     handleEditingBook = (editedBook) =>{
-        axios.put('http://localhost:5000/api/books/' + this.state.selectedBook._id, editedBook)
+        axios.put('/api/books/' + this.state.selectedBook._id, editedBook)
             .then(res =>console.log(res.data))
 
         this.setState({

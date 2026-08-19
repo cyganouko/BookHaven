@@ -1,4 +1,6 @@
 ---
-container_name: bookhaven-backend
-network: app-net
-volume: app-mongo-data/app
+backend_container_name: bookhaven-backend
+backend_image: "{{ dockerhub_username }}/bookhaven-backend:{{ docker_image_tag }}"
+backend_network: app-net
+backend_port: "5000"
+backend_mongo_uri: "mongodb://app-mongo:27017/bookhaven"

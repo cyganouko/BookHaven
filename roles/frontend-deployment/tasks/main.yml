@@ -8,6 +8,7 @@
   community.docker.docker_image:
     name: "{{ frontend_image }}"
     source: pull
+    force_source: true
 
 - name: Run BookHaven frontend container
   community.docker.docker_container:

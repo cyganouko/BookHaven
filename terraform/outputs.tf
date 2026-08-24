@@ -1,11 +1,16 @@
-output "instance_name" {
-  description = "Name of the BookHaven Compute Engine instance"
-  value       = google_compute_instance.bookhaven_node.name
+output "gke_cluster_name" {
+  description = "Name of the BookHaven GKE cluster"
+  value       = google_container_cluster.bookhaven.name
 }
 
-output "instance_public_ip" {
-  description = "Public IP address of the BookHaven Compute Engine instance"
-  value       = google_compute_instance.bookhaven_node.network_interface[0].access_config[0].nat_ip
+output "gke_cluster_endpoint" {
+  description = "Endpoint of the BookHaven GKE cluster"
+  value       = google_container_cluster.bookhaven.endpoint
+}
+
+output "gke_node_pool_name" {
+  description = "Name of the BookHaven GKE node pool"
+  value       = google_container_node_pool.bookhaven.name
 }
 
 output "vpc_name" {

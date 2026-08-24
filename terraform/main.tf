@@ -8,6 +8,18 @@ resource "google_compute_subnetwork" "bookhaven_subnet" {
   ip_cidr_range = var.subnet_cidr
   region        = var.region
   network       = google_compute_network.bookhaven_vpc.id
+
+  secondary_ip_range {
+    range_name    = "bookhaven-pods"
+    ip_cidr_range = "10.20.0.0/16"
+  }
+
+  secondary_ip_range {
+    range_name    = "bookhaven-services"
+    ip_cidr_range = "10.30.0.0/20"
+  }
+
+  private_ip_google_access = true
 }
 
 resource "google_compute_firewall" "bookhaven_allow_ssh" {
@@ -38,28 +50,68 @@ resource "google_compute_firewall" "bookhaven_allow_http" {
   target_tags = ["bookhaven-node"]
 }
 
-resource "google_compute_instance" "bookhaven_node" {
-  name         = "bookhaven-node"
-  machine_type = var.machine_type
-  zone         = var.zone
+resource "google_container_cluster" "bookhaven" {
+  name     = "bookhaven-gke"
+  location = var.zone
 
-  tags = ["bookhaven-node"]
+  network    = google_compute_network.bookhaven_vpc.id
+  subnetwork = google_compute_subnetwork.bookhaven_subnet.id
 
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-lts"
-      size  = 30
-      type  = "pd-balanced"
+  deletion_protection = false
+
+  remove_default_node_pool = true
+  initial_node_count       = 1
+
+  networking_mode = "VPC_NATIVE"
+
+  ip_allocation_policy {
+    cluster_secondary_range_name  = "bookhaven-pods"
+    services_secondary_range_name = "bookhaven-services"
+  }
+
+  workload_identity_config {
+    workload_pool = "${var.project_id}.svc.id.goog"
+  }
+
+  release_channel {
+    channel = "REGULAR"
+  }
+
+  resource_labels = {
+    project     = "bookhaven"
+    environment = "production"
+    managed_by  = "terraform"
+  }
+}
+
+resource "google_container_node_pool" "bookhaven" {
+  name       = "bookhaven-node-pool"
+  location   = var.zone
+  cluster    = google_container_cluster.bookhaven.name
+  node_count = 1
+
+  management {
+    auto_repair  = true
+    auto_upgrade = true
+  }
+
+  node_config {
+    machine_type = var.machine_type
+
+    disk_size_gb = 30
+    disk_type    = "pd-balanced"
+
+    image_type = "COS_CONTAINERD"
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+
+    labels = {
+      app         = "bookhaven"
+      environment = "production"
     }
-  }
 
-  network_interface {
-    subnetwork = google_compute_subnetwork.bookhaven_subnet.id
-
-    access_config {}
-  }
-
-  metadata = {
-    enable-oslogin = "TRUE"
+    tags = ["bookhaven-node"]
   }
 }

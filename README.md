@@ -59,3 +59,9 @@ BookHaven/
 ├── explanation.md
 └── README.md
 
+
+## Architecture Diagram
+
+The following diagram illustrates the complete BookHaven DevOps architecture and how the application moves from source control through CI/CD, containerization, infrastructure provisioning, and Kubernetes deployment.
+
+![BookHaven DevOps Architecture](docs/architecture.jpeg)

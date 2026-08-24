@@ -26,3 +26,9 @@ Kubernetes
 Frontend → Backend → MongoDB
                  ↓
           Persistent Storage
+
+## Architecture Diagram
+
+The following diagram illustrates the complete BookHaven DevOps architecture, showing the relationship between source control, CI/CD, Docker Hub, Terraform, Google Cloud, Kubernetes, application workloads, and persistent MongoDB storage.
+
+![BookHaven DevOps Architecture](docs/architecture.jpeg)

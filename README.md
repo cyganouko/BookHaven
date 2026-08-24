@@ -1,46 +1,61 @@
 # BookHaven
 
-A library catalog app (MERN stack) — React frontend, Node/Express + MongoDB backend.
+BookHaven is a MERN-stack library catalog application deployed through a complete DevOps pipeline. The project demonstrates source control, CI/CD, containerization, infrastructure as code, configuration management, and Kubernetes orchestration on Google Kubernetes Engine (GKE).
 
-# Requirements
-Install the following:
-- [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/try/download/community)
-- [Docker](https://docs.docker.com/engine/install/) (for containerization)
-- [Vagrant](https://www.vagrantup.com/) + [VirtualBox](https://www.virtualbox.org/) (for provisioning)
-- [Ansible](https://docs.ansible.com/) (for configuration management)
+## Live Application
 
-## Run locally (without Docker)
+**Live URL:** http://136.116.76.12
 
-```bash
-# backend
-cd backend
-npm install
-npm start   # runs on port 5000
+The frontend is exposed through a Kubernetes `LoadBalancer` Service.
 
-# frontend (in a separate terminal)
-cd client
-npm install
-npm start   # runs on port 3000
-```
+## Architecture
 
-> **Note:** `npm start`/`npm run build` in `client/` set `NODE_OPTIONS=--openssl-legacy-provider`
-> under the hood. This app uses an older react-scripts (3.x) whose bundled webpack 4
-> is incompatible with the OpenSSL 3 changes in Node 17+. The flag works around it —
-> no action needed, just don't remove it from `package.json`.
+The application consists of:
 
-Seed some books via the "Add a book" form once both are running.
+- **React frontend** served by Nginx
+- **Node.js / Express backend** providing the REST API
+- **MongoDB** for persistent book data
+- **Docker** for containerization
+- **Docker Compose** for local orchestration
+- **GitHub Actions** for CI/CD
+- **Docker Hub** for container image publishing
+- **Terraform** for Google Cloud infrastructure provisioning
+- **Ansible** for configuration management
+- **Kubernetes / GKE** for production orchestration
+- **PersistentVolumeClaim** for MongoDB persistence
 
-## How to run with Vagrant + Ansible
+## Repository Structure
 
-```bash
-vagrant up --provision
-```
+```text
+BookHaven/
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml
+├── backend/
+│   ├── Dockerfile
+│   ├── .dockerignore
+│   └── ...
+├── client/
+│   ├── Dockerfile
+│   ├── .dockerignore
+│   └── ...
+├── k8s/
+│   ├── backend.yaml
+│   ├── frontend.yaml
+│   ├── kustomization.yaml
+│   └── mongodb.yaml
+├── roles/
+│   ├── backend-deployment/
+│   ├── docker-setup/
+│   ├── frontend-deployment/
+│   └── setup-mongodb/
+├── terraform/
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── providers.tf
+│   ├── variables.tf
+│   └── terraform.tfvars.example
+├── docker-compose.yml
+├── explanation.md
+└── README.md
 
-This provisions a VM, then runs `playbook.yml`, which applies the three
-roles in `roles/`:
-- `setup-mongodb` — runs a MongoDB container
-- `backend-deployment` — pulls and runs the backend image
-- `frontend-deployment` — left for you to complete
-
-See `Structure` for the ansible-playbook directory layout.

@@ -43,6 +43,11 @@ app.use('/api/books', bookRoute)
 // Define the PORT
 const PORT = process.env.PORT || 5000
 
+// Kubernetes health check
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+});
+
 app.listen(PORT, ()=>{
     console.log(`Server listening on port ${PORT}`)
 })

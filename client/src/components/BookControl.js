@@ -62,12 +62,17 @@ class BookControl extends Component {
     }
 
     // Method to handle adding a new book
-    handleAddingNewBook = (newBook) =>{
+    handleAddingNewBook = (newBook) => {
         axios.post('/api/books', newBook)
-            .then(res => console.log(res.data))
-        this.setState({
-            formVisibleOnPage: false
-        })
+            .then(res => {
+                this.setState({
+                    actualBookList: [...this.state.actualBookList, res.data],
+                    formVisibleOnPage: false
+                });
+            })
+            .catch(error => {
+                console.error('Failed to add book:', error);
+            });
     };
 
     handleDeletingBook = (id) =>{

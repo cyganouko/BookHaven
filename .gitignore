@@ -43,3 +43,6 @@ vars.yml
 # OS files
 .DS_Store
 Thumbs.db
+
+# Terraform variable values
+terraform.tfvars

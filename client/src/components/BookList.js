@@ -12,7 +12,7 @@ function BookList (props) {
                         <div className="abt-top-border"> </div>
                     </div>
                     <div className="col-4 col-sm-4 col-md-4">
-                        <p className="book-title text-center">CATALOG</p>
+                        <p className="book-title text-center"> BOOK CATALOG</p>
                     </div>
                     <div className="col-4 col-sm-4 col-md-4">
                         <div className="abt-top-border"> </div>
